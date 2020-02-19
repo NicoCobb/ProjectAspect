@@ -1,7 +1,7 @@
 {
   "allowHttpBackend": false,
   "backendCommand": "node backend -c \"zwns08j4d3k12zqkjhqs2inxcunnt4\" -s \"+Gsyi03S9KvdEVowA4+/3Kn75HiL1nNjFfoCGlfRAc4=\"",
-  "backendFolderName": "extension-getting-started\\services",
+  "backendFolderName": "extension1\\services",
   "certificateExceptions": [],
   "extensionViews": [
     {
@@ -76,7 +76,7 @@
     "whitelistedPanelUrls": []
   },
   "frontendCommand": "",
-  "frontendFolderName": "extension-getting-started\\public",
+  "frontendFolderName": "extension1\\public",
   "name": "Aspect Project",
   "version": 1
 }

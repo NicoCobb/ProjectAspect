@@ -1,5 +1,6 @@
 let token = '';
 let tuid = '';
+let textvisible = false;
 
 const twitch = window.Twitch.ext;
 
@@ -57,6 +58,15 @@ $(function () {
   // when we click the cycle button
   $('#cycle').click(function () {
   if(!token) { return twitch.rig.log('Not authorized'); }
-    document.write("Hello World");
+  if (!textvisible)
+  {
+    document.getElementById("text").style.display="block";
+    textvisible = true;
+  }
+  else
+  {
+    document.getElementById("text").style.display="none";
+    textvisible = false;
+  }
   });
 });
