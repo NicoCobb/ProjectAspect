@@ -76,7 +76,7 @@
     "whitelistedPanelUrls": []
   },
   "frontendCommand": "",
-  "frontendFolderName": "extension1\\public",
+  "frontendFolderName": "extension1/public",
   "name": "Aspect Project",
   "version": 1
 }
