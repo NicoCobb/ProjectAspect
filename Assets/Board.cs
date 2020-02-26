@@ -1,27 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour {
     public int xSize;
     public int ySize;
+    public Tilemap tilemap;
     int xScale = 1;
     int yScale = 1;
 
     // stores the IDs of each item on a given x,y coordinate
-    public LinkedList<GamePiece>[,] tiles;
+    LinkedList<GamePiece>[,] tiles;
 
     // Start is called before the first frame update
     void Start() {
-        Grid grid = gameObject.GetComponent(typeof(Grid)) as Grid; 
-        xScale = 1;
-        yScale = 1;
-        tiles = new LinkedList<GamePiece>[xSize, ySize];
+        tiles = new LinkedList<GamePiece>[xSize,ySize];
+
+        TileBase dark = tilemap.GetTile(new Vector3Int(0, 0, 0));
+        TileBase light = tilemap.GetTile(new Vector3Int(1, 0, 0));
+
+        Vector3Int[] positions = new Vector3Int[xSize * ySize];
+        TileBase[] tileArray = new TileBase[xSize * ySize];
+    
+        int i=0;
         for (int x=0; x<xSize; x++) {
             for (int y=0; y<ySize; y++) {
                 tiles[x,y] = new LinkedList<GamePiece>();
+
+                positions[i] = new Vector3Int(x, y, 0);
+                if ((x+y) % 2 == 0) {
+                    tileArray[i] = light;
+                } else {
+                    tileArray[i] = dark;
+                }
+                i++;
             }
         }
+
+        tilemap.ClearAllTiles();
+        tilemap.SetTiles(positions, tileArray); 
 
         Refresh();
     }

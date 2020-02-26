@@ -27,9 +27,6 @@ public class GamePiece : MonoBehaviour
     }
 
     public void Move(int deltaX, int deltaY) {
-        print("move");
-        print(deltaX);
-        print(deltaY);
         Point newCoord = board.MovePiece(this.coord, new Point(this.coord.X+deltaX, this.coord.Y+deltaY), this);
         if (this.coord != newCoord) {
             this.SetPosition(newCoord);
