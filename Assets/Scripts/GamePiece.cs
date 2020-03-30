@@ -8,6 +8,7 @@ public class GamePiece : MonoBehaviour
     public int startX;
     public int startY;
     Point coord;
+    Point[] moveList;
 
     // Start is called before the first frame update
     void Start() {
