@@ -7,27 +7,28 @@ public class GamePiece : MonoBehaviour
     public Board board;
     public int startX;
     public int startY;
-
     [HideInInspector]
     public PlayerData data;
     public LinkedList<Direction> moveList = new LinkedList<Direction>();
 
     // Start is called before the first frame update
-    void Start() {
+    void Awake() {
         // moveList = new LinkedList<Direction>();
         data = gameObject.GetComponent(typeof(PlayerData)) as PlayerData;
         print(data);
         data.coord = new Point(startX, startY);
         print(this);
-        board.Register(this, data.coord);
-        moveList.AddLast(Direction.Right);
-        moveList.AddLast(Direction.Left);
-        moveList.AddLast(Direction.Right);
-        moveList.AddLast(Direction.Left);
-        moveList.AddLast(Direction.Right);
-        SetPosition(new Point(0,0));
+        // moveList.AddLast(Direction.Right);
+        // moveList.AddLast(Direction.Left);
+        // moveList.AddLast(Direction.Right);
+        // moveList.AddLast(Direction.Left);
+        // moveList.AddLast(Direction.Right);
+        // SetPosition(new Point(0,0));
     }
 
+void Start() {
+    board.Register(this, data.coord);
+}
     public void SetPosition(Point newCoord) {
         print(data);
         data.coord = newCoord;

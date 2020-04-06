@@ -48,26 +48,33 @@ public class Board : MonoBehaviour {
 
         tilemap.ClearAllTiles();
         tilemap.SetTiles(positions, tileArray); 
-        populateBoard();
 
+        print("poplulate board now");
+        populateBoard();
         Refresh();
     }
 
     public void populateBoard() {
+        print("ahhhhhhhhhhhhh!!");
         GameObject player = Instantiate(kingPrefab, transform.position, transform.rotation);
         GameObject twitch = Instantiate(enemyPrefab, transform.position, transform.rotation);
+        print("2222222222222");
 
         king = player.GetComponent<GamePiece>();
+        print("king GetComponent:" + king);
         king.board = this;
         king.SetPosition(new Point(0,0));
 
         enemy = twitch.GetComponent<GamePiece>();
+        print("enemy GetComponent:" + enemy);
         enemy.board = this;
-        enemy.SetPosition(new Point(10,10));
+        enemy.SetPosition(new Point(9,9));
     }
 
 
     public void populateTwitchMoves() {
+        print(UnityHttpListener.TwitchMoves);
+        print(enemy);
         enemy.moveList = UnityHttpListener.TwitchMoves;
     }
 

@@ -556,9 +556,9 @@ MonoBehaviour:
   xSize: 10
   ySize: 10
   tilemap: {fileID: 696195390}
-  kingPrefab: {fileID: 1587070849446011394, guid: 925578bb71d3cc845b61f9a162ee3e6b,
+  kingPrefab: {fileID: 6537855339285624645, guid: 1b6366413a261be4aaa93c99fa114b92,
     type: 3}
-  enemyPrefab: {fileID: 1587070849446011394, guid: 925578bb71d3cc845b61f9a162ee3e6b,
+  enemyPrefab: {fileID: 3850734378450821738, guid: 429519ea322a97b4791b7839064ef2d6,
     type: 3}
 --- !u!1 &2050228442
 GameObject:
