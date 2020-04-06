@@ -29,7 +29,7 @@ public class Countdown : MonoBehaviour
      public IEnumerator StartCountdown(float countdownValue = 10)
     {
         currCountdownValue = countdownValue;
-        Debug.Log("total Countdown time: " + totalCountdownTime);
+        // Debug.Log("total Countdown time: " + totalCountdownTime);
         
         
         while (currCountdownValue > 0)
@@ -42,7 +42,7 @@ public class Countdown : MonoBehaviour
             float redPercent = (totalCountdownTime - currCountdownValue) / (totalCountdownTime * (1 - percentTimeLeftMaxRed));
             if(redPercent > 1)
                 redPercent = 1;
-            Debug.Log("red percent:" + redPercent);
+            // Debug.Log("red percent:" + redPercent);
             int seconds = (int)currCountdownValue % 60;
             countdownText.text = ((int)currCountdownValue/60 +":" + seconds.ToString("D2"));
             countdownText.color = new Color(1, 1 - redPercent, 1 - redPercent, 1);

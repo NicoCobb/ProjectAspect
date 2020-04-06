@@ -15,19 +15,21 @@ public class GamePiece : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         // moveList = new LinkedList<Direction>();
-        data = gameObject.AddComponent(typeof(PlayerData)) as PlayerData;
+        data = gameObject.GetComponent(typeof(PlayerData)) as PlayerData;
         print(data);
         data.coord = new Point(startX, startY);
         print(this);
         board.Register(this, data.coord);
         moveList.AddLast(Direction.Right);
+        moveList.AddLast(Direction.Left);
         moveList.AddLast(Direction.Right);
+        moveList.AddLast(Direction.Left);
         moveList.AddLast(Direction.Right);
-        moveList.AddLast(Direction.Right);
-        moveList.AddLast(Direction.Right);
+        SetPosition(new Point(0,0));
     }
 
     public void SetPosition(Point newCoord) {
+        print(data);
         data.coord = newCoord;
         Point pos = board.CoordToPos(newCoord);
         transform.position = new Vector2(pos.X, pos.Y);
