@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
+    public int health = 15;
+    public int damageMax = 4;
+    public int damageMin = 1;
+    public Point coord;
+    public Team team;
     // Start is called before the first frame update
     void Start()
     {
-        
+        team = (Team)Random.Range(0,1);
     }
 
     // Update is called once per frame
@@ -16,3 +21,6 @@ public class PlayerData : MonoBehaviour
         
     }
 }
+
+public enum Direction {Up, Down, Left, Right};
+public enum Team {Red, Blue};
