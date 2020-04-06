@@ -9,13 +9,15 @@ public class Board : MonoBehaviour {
     public Tilemap tilemap;
     int xScale = 1;
     int yScale = 1;
+    private const int movesPerTurn = 5;
 
     // stores the IDs of each item on a given x,y coordinate
-    LinkedList<GamePiece>[,] tiles;
+    List<GamePiece>[,] tiles;
+    List<GamePiece> pieces;
 
     // Start is called before the first frame update
     void Start() {
-        tiles = new LinkedList<GamePiece>[xSize,ySize];
+        tiles = new List<GamePiece>[xSize,ySize];
 
         TileBase dark = tilemap.GetTile(new Vector3Int(0, 0, 0));
         TileBase light = tilemap.GetTile(new Vector3Int(1, 0, 0));
@@ -26,7 +28,7 @@ public class Board : MonoBehaviour {
         int i=0;
         for (int x=0; x<xSize; x++) {
             for (int y=0; y<ySize; y++) {
-                tiles[x,y] = new LinkedList<GamePiece>();
+                tiles[x,y] = new List<GamePiece>();
 
                 positions[i] = new Vector3Int(x, y, 0);
                 if ((x+y) % 2 == 0) {
@@ -44,11 +46,6 @@ public class Board : MonoBehaviour {
         Refresh();
     }
 
-    // Update is called once per frame
-    void Update() {
-        
-    }
-
     public Point PosToCoord(Point pos) {
         return new Point(pos.X / xScale, pos.Y / yScale);
     }
@@ -61,7 +58,8 @@ public class Board : MonoBehaviour {
         print(tiles[0,0]);
         print(coord.X);
         print(tiles[coord.X, coord.Y]);
-        tiles[coord.X, coord.Y].AddFirst(gp);
+        tiles[coord.X, coord.Y].Add(gp);
+        pieces.Add(gp);
     }
 
     public Point MovePiece(Point oldCoord, Point newCoord, GamePiece piece) {
@@ -69,8 +67,37 @@ public class Board : MonoBehaviour {
             return oldCoord;
         }
         tiles[oldCoord.X, oldCoord.Y].Remove(piece);
-        tiles[newCoord.X, newCoord.Y].AddFirst(piece);
+        tiles[newCoord.X, newCoord.Y].Add(piece);
         return newCoord;
+    }
+
+
+    public IEnumerator StartTurn() {
+        for(int i = 0; i < movesPerTurn; i++) {
+            movePieces();
+            checkCombat();
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private void movePieces() {
+        foreach (GamePiece gp in pieces) {
+            gp.MoveStep();
+        }
+    }
+
+    private void checkCombat() {
+        foreach (GamePiece gp in pieces) {
+            //TODO: make this properly run combat for more than 2 on a square
+            Point loc = gp.data.coord;
+
+            if (tiles[loc.X, loc.Y].Count > 1) {
+                foreach (GamePiece enemy in tiles[loc.X, loc.Y]) {
+                    if(enemy != gp && enemy.data.team != gp.data.team)
+                        gp.CombatCheck(enemy);
+                }
+            }
+        }
     }
 
     void Refresh() {
