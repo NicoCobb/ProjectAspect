@@ -12,7 +12,7 @@ public class CameraAdjust : MonoBehaviour
     {
         Camera currentCam = GetComponent<Camera>();
         Board gameBoard = board.GetComponent<Board>();
-        currentCam.orthographicSize = gameBoard.xSize - 2;
+        currentCam.orthographicSize = gameBoard.xSize - 1;
     }
 
     // Update is called once per frame

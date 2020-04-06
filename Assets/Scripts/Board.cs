@@ -7,6 +7,7 @@ public class Board : MonoBehaviour {
     public int xSize;
     public int ySize;
     public Tilemap tilemap;
+    public GameObject piecePrefab;
     int xScale = 1;
     int yScale = 1;
     private const int movesPerTurn = 5;
@@ -18,6 +19,7 @@ public class Board : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         tiles = new List<GamePiece>[xSize,ySize];
+        pieces = new List<GamePiece>();
 
         TileBase dark = tilemap.GetTile(new Vector3Int(0, 0, 0));
         TileBase light = tilemap.GetTile(new Vector3Int(1, 0, 0));
@@ -42,10 +44,19 @@ public class Board : MonoBehaviour {
 
         tilemap.ClearAllTiles();
         tilemap.SetTiles(positions, tileArray); 
+        populateBoard();
 
         Refresh();
     }
 
+    public void populateBoard() {
+        GameObject piece = Instantiate(piecePrefab, transform.position, transform.rotation);
+
+        GamePiece king = piece.GetComponent<GamePiece>();
+        king.board = this;
+        king.SetPosition(new Point(5,0));
+
+    }
     public Point PosToCoord(Point pos) {
         return new Point(pos.X / xScale, pos.Y / yScale);
     }

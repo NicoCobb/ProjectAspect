@@ -46,7 +46,7 @@ public class Countdown : MonoBehaviour
             int seconds = (int)currCountdownValue % 60;
             countdownText.text = ((int)currCountdownValue/60 +":" + seconds.ToString("D2"));
             countdownText.color = new Color(1, 1 - redPercent, 1 - redPercent, 1);
-            Debug.Log("Countdown: " + currCountdownValue);
+            // Debug.Log("Countdown: " + currCountdownValue);
             yield return new WaitForSeconds(1.0f);
             currCountdownValue--;
         }
