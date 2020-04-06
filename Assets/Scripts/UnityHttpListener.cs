@@ -20,6 +20,7 @@ public class UnityHttpListener : MonoBehaviour
         }
 
         listener.Prefixes.Add("http://127.0.0.1:4000/");
+        listener.Prefixes.Add("http://192.168.0.114:4000/");
         listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
         listener.Start();
 
@@ -46,10 +47,10 @@ public class UnityHttpListener : MonoBehaviour
                 string[] tuple = pair.Split('=');
                 data.Add(tuple[0], tuple[1].Split('+'));
             };
-            // nico: data["moves"] is an array of strings that you want
 
             TwitchMoves = new LinkedList<Direction>();
             foreach (string dir in data["moves"]) {
+                Debug.Log(dir);
                 if(dir == "left") {
                     TwitchMoves.AddLast(Direction.Left);
                 } else if (dir == "down") {

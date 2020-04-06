@@ -791,7 +791,7 @@ MonoBehaviour:
   gameBoard: {fileID: 2008538767}
   percentTimeLeftMaxRed: 10
   countdownTimeMinutes: 0
-  countdownTimeSeconds: 5
+  countdownTimeSeconds: 10
 --- !u!114 &2107389695
 MonoBehaviour:
   m_ObjectHideFlags: 0
