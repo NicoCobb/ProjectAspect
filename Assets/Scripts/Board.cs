@@ -7,10 +7,14 @@ public class Board : MonoBehaviour {
     public int xSize;
     public int ySize;
     public Tilemap tilemap;
-    public GameObject piecePrefab;
+    public GameObject kingPrefab;
+    public GameObject enemyPrefab;
     int xScale = 1;
     int yScale = 1;
     private const int movesPerTurn = 5;
+
+    GamePiece king;
+    GamePiece enemy;
 
     // stores the IDs of each item on a given x,y coordinate
     List<GamePiece>[,] tiles;
@@ -50,13 +54,23 @@ public class Board : MonoBehaviour {
     }
 
     public void populateBoard() {
-        GameObject piece = Instantiate(piecePrefab, transform.position, transform.rotation);
+        GameObject player = Instantiate(kingPrefab, transform.position, transform.rotation);
+        GameObject twitch = Instantiate(enemyPrefab, transform.position, transform.rotation);
 
-        GamePiece king = piece.GetComponent<GamePiece>();
+        king = player.GetComponent<GamePiece>();
         king.board = this;
-        king.SetPosition(new Point(5,0));
+        king.SetPosition(new Point(0,0));
 
+        enemy = twitch.GetComponent<GamePiece>();
+        enemy.board = this;
+        enemy.SetPosition(new Point(10,10));
     }
+
+
+    public void populateTwitchMoves() {
+        enemy.moveList = UnityHttpListener.TwitchMoves;
+    }
+
     public Point PosToCoord(Point pos) {
         return new Point(pos.X / xScale, pos.Y / yScale);
     }
@@ -85,6 +99,7 @@ public class Board : MonoBehaviour {
 
     public IEnumerator StartTurn() {
         for(int i = 0; i < movesPerTurn; i++) {
+            populateTwitchMoves();
             movePieces();
             checkCombat();
             yield return new WaitForSeconds(0.5f);

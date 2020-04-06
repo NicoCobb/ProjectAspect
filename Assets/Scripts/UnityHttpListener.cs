@@ -10,6 +10,7 @@ public class UnityHttpListener : MonoBehaviour
 {
     private HttpListener listener;
     private Thread listenerThread;
+    static public LinkedList<Direction> TwitchMoves = new LinkedList<Direction>();
 
     void Start() {
         listener = new HttpListener();
@@ -46,9 +47,24 @@ public class UnityHttpListener : MonoBehaviour
                 data.Add(tuple[0], tuple[1].Split('+'));
             };
             // nico: data["moves"] is an array of strings that you want
+
+            TwitchMoves = new LinkedList<Direction>();
             foreach (string dir in data["moves"]) {
-                Debug.Log(dir);
+                if(dir == "left") {
+                    TwitchMoves.AddLast(Direction.Left);
+                } else if (dir == "down") {
+                    TwitchMoves.AddLast(Direction.Down);
+                } else if (dir == "up") {
+                    TwitchMoves.AddLast(Direction.Up);
+                } else if (dir == "right") {
+                    TwitchMoves.AddLast(Direction.Right);
+                } else if (dir == "stand") {
+                    TwitchMoves.AddLast(Direction.Stand);
+                } else {
+                    Debug.Log("oops");
+                }
             }
+
         }
         context.Response.Close();
     }

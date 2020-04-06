@@ -16,5 +16,5 @@ public class PlayerData : MonoBehaviour
     }
 }
 
-public enum Direction {Up, Down, Left, Right};
+public enum Direction {Up, Down, Left, Right, Stand};
 public enum Team {Red, Blue};

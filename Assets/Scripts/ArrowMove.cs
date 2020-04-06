@@ -13,14 +13,18 @@ public class ArrowMove : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyUp(KeyCode.UpArrow)) { 
-            self.Move(0, 1);
-        } else if (Input.GetKeyUp(KeyCode.DownArrow)) { 
-            self.Move(0, -1);
-        } else if (Input.GetKeyUp(KeyCode.LeftArrow)) { 
-            self.Move(-1, 0);
-        } else if (Input.GetKeyUp(KeyCode.RightArrow)) { 
-            self.Move(1, 0);
-        } 
+        if(self.moveList.Count < 5) {
+            if (Input.GetKeyDown(KeyCode.UpArrow)) { 
+                self.moveList.AddLast(Direction.Up);
+            } else if (Input.GetKeyDown(KeyCode.DownArrow)) { 
+                self.moveList.AddLast(Direction.Down);
+            } else if (Input.GetKeyDown(KeyCode.LeftArrow)) { 
+                self.moveList.AddLast(Direction.Left);
+            } else if (Input.GetKeyDown(KeyCode.RightArrow)) { 
+                self.moveList.AddLast(Direction.Right);
+            } else if (Input.GetKeyDown(KeyCode.Space)) {
+                self.moveList.AddLast(Direction.Stand);
+            }
+        }
     }
 }

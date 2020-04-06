@@ -10,7 +10,7 @@ public class GamePiece : MonoBehaviour
 
     [HideInInspector]
     public PlayerData data;
-    LinkedList<Direction> moveList = new LinkedList<Direction>();
+    public LinkedList<Direction> moveList = new LinkedList<Direction>();
 
     // Start is called before the first frame update
     void Start() {
@@ -56,6 +56,9 @@ public class GamePiece : MonoBehaviour
                     break;
                 case Direction.Right:
                     Move(1,0);
+                    break;
+                case Direction.Stand:
+                    Move(0,0);
                     break;
                 default:
                     print("no movement");
