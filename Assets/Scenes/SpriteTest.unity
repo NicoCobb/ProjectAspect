@@ -479,6 +479,7 @@ MonoBehaviour:
   xSize: 4
   ySize: 4
   tilemap: {fileID: 1618073997}
+  piecePrefab: {fileID: 0}
 --- !u!156049354 &1341430194
 Grid:
   m_ObjectHideFlags: 0
