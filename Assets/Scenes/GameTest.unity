@@ -441,6 +441,7 @@ MonoBehaviour:
   board: {fileID: 2008538767}
   startX: 0
   startY: 0
+  data: {fileID: 0}
 --- !u!4 &1305627537
 Transform:
   m_ObjectHideFlags: 0
@@ -925,10 +926,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 1611056188}
-  gameBoard: {fileID: 0}
+  gameBoard: {fileID: 2008538767}
   percentTimeLeftMaxRed: 10
   countdownTimeMinutes: 0
-  countdownTimeSeconds: 30
+  countdownTimeSeconds: 5
 --- !u!114 &2107389695
 MonoBehaviour:
   m_ObjectHideFlags: 0
