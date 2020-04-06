@@ -10,14 +10,21 @@ public class GamePiece : MonoBehaviour
 
     [HideInInspector]
     public PlayerData data;
-    LinkedList<Direction> moveList;
+    LinkedList<Direction> moveList = new LinkedList<Direction>();
 
     // Start is called before the first frame update
     void Start() {
+        // moveList = new LinkedList<Direction>();
+        data = gameObject.AddComponent(typeof(PlayerData)) as PlayerData;
+        print(data);
         data.coord = new Point(startX, startY);
-        data = new PlayerData();
         print(this);
-        // board.Register(this, this.coord);
+        board.Register(this, data.coord);
+        moveList.AddLast(Direction.Right);
+        moveList.AddLast(Direction.Right);
+        moveList.AddLast(Direction.Right);
+        moveList.AddLast(Direction.Right);
+        moveList.AddLast(Direction.Right);
     }
 
     public void SetPosition(Point newCoord) {
