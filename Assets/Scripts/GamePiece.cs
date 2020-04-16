@@ -25,10 +25,6 @@ public class GamePiece : MonoBehaviour
         // moveList.AddLast(Direction.Right);
         // SetPosition(new Point(0,0));
     }
-
-void Start() {
-    board.Register(this, data.coord);
-}
     public void SetPosition(Point newCoord) {
         print(data);
         data.coord = newCoord;
@@ -47,13 +43,13 @@ void Start() {
 
             switch(currentStep) {
                 case Direction.Up:
-                    Move(0,-1);
+                    Move(0,1);
                     break;
                 case Direction.Left:
                     Move(-1,0);
                     break;
                 case Direction.Down:
-                    Move(0,1);
+                    Move(0,-1);
                     break;
                 case Direction.Right:
                     Move(1,0);
