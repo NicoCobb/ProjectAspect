@@ -69,6 +69,9 @@ public class Board : MonoBehaviour {
         print("enemy GetComponent:" + enemy);
         enemy.board = this;
         enemy.SetPosition(new Point(9,9));
+
+        Register(king, king.data.coord);
+        Register(enemy, enemy.data.coord);
     }
 
 
