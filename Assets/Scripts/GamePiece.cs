@@ -101,6 +101,7 @@ public class GamePiece : MonoBehaviour
         if(data.health <= 0) {
             //death animation or whatever here
             Destroy(this);
+            Application.Quit();
         }
     }
 }
