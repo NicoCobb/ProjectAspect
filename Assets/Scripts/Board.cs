@@ -9,6 +9,7 @@ public class Board : MonoBehaviour {
     public Tilemap tilemap;
     public GameObject kingPrefab;
     public GameObject enemyPrefab;
+    public UnityHttpClient network;
     int xScale = 1;
     int yScale = 1;
     private const int movesPerTurn = 5;
@@ -106,8 +107,49 @@ public class Board : MonoBehaviour {
         return newCoord;
     }
 
+    private string SerializePiece(GamePiece gp) {
+        string type = "0";
+        string id = "";
+        if (gp != null) {
+            // TODO when ally types are in
+            // if (typeof(gp) == typeof(ally)) type = "1";
+            if (gp.GetType() == enemy.GetType()) type = "2";
+            if (gp.GetType() == king.GetType()) type = "3";
+            id = gp.data.id;
+        }
+        return "{\"type\": " + type +  ", \"id\": \"" + id + "\"}";
+    }
+
+    public string SerializeBoard() {
+        string str = "[";
+        for (int x=0; x<xSize; x++) {
+            str += "[";
+            for (int y=0; y<ySize; y++) {
+                str += "[";
+                if (tiles[x,y].Count == 0) {
+                    str += SerializePiece(null);
+                }
+                for (int i=0; i<tiles[x,y].Count; i++) {
+                    str += SerializePiece(tiles[x,y][i]);
+                    if (i != tiles[x,y].Count -1) {
+                        str += ",";
+                    }
+                }
+                str += "]";
+                if (y != ySize -1) {
+                    str += ",";
+                }
+            }
+            str += "]";
+            if (x != xSize -1) {
+                str += ",";
+            }
+        }
+        return str + "]";
+    }
 
     public IEnumerator StartTurn() {
+        print("StartTurn");
         for(int i = 0; i < movesPerTurn; i++) {
             populateTwitchMoves();
             movePieces();
@@ -117,6 +159,8 @@ public class Board : MonoBehaviour {
     }
 
     private void movePieces() {
+        print("movePieces");
+        network.sendMinimapArray(SerializeBoard());
         foreach (GamePiece gp in pieces) {
             gp.MoveStep();
         }
