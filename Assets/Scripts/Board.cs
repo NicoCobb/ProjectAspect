@@ -50,29 +50,25 @@ public class Board : MonoBehaviour {
         tilemap.ClearAllTiles();
         tilemap.SetTiles(positions, tileArray); 
 
-        print("poplulate board now");
         populateBoard();
         Refresh();
     }
 
     public void populateBoard() {
-        print("ahhhhhhhhhhhhh!!");
         GameObject player = Instantiate(kingPrefab, transform.position, transform.rotation);
         GameObject twitch = Instantiate(enemyPrefab, transform.position, transform.rotation);
-        print("2222222222222");
 
         king = player.GetComponent<GamePiece>();
-        print("king GetComponent:" + king);
         king.board = this;
         king.SetPosition(new Point(0,0));
 
         enemy = twitch.GetComponent<GamePiece>();
-        print("enemy GetComponent:" + enemy);
         enemy.board = this;
         enemy.SetPosition(new Point(9,9));
 
         Register(king, king.data.coord);
         Register(enemy, enemy.data.coord);
+        network.sendMinimapArray(SerializeBoard());
     }
 
 
@@ -149,7 +145,6 @@ public class Board : MonoBehaviour {
     }
 
     public IEnumerator StartTurn() {
-        print("StartTurn");
         for(int i = 0; i < movesPerTurn; i++) {
             populateTwitchMoves();
             movePieces();
@@ -159,11 +154,10 @@ public class Board : MonoBehaviour {
     }
 
     private void movePieces() {
-        print("movePieces");
-        network.sendMinimapArray(SerializeBoard());
         foreach (GamePiece gp in pieces) {
             gp.MoveStep();
         }
+        network.sendMinimapArray(SerializeBoard());
     }
 
     private void checkCombat() {

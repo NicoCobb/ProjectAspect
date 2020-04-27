@@ -39,35 +39,54 @@ public class UnityHttpListener : MonoBehaviour
 
     private void ListenerCallback(IAsyncResult result) {
         HttpListenerContext context = listener.EndGetContext(result);
-        
-        // TODO 
-        // string method_name = context.Request.Url.Segments[1].Replace("/", "");
-        // string[] str_params = context.Request.Url.Segments.Skip(2).Select(s=>s.Replace("/","")).ToArray();
-
-        // var method = this.GetType().GetMethod(method_name);
-        // object[] method_params = method.GetParameters()
-        //                         .Select((p, i) => Convert.ChangeType(str_params[i], p.ParameterType)).ToArray();
-
-        // object ret = method.Invoke(this, method_params);
-        // string retstr = JsonConvert.SerializeObject(ret);
-
         if (context.Request.HttpMethod == "POST") {
-            string str_stream = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding).ReadToEnd();
-            Dictionary<string, string[]> data = new Dictionary<string, string[]>();
-            string[] data_pairs = str_stream.Split('&');
-            foreach(string pair in data_pairs) {
-                string[] tuple = pair.Split('=');
-                data.Add(tuple[0], tuple[1].Split('+'));
-            };
-            RecieveMoves(data);
+            using (var response = context.Response) {
+                try {
+                    var handled = false;
+                    switch (context.Request.Url.AbsolutePath) {
+                        case "/register":
+                            RegisterUser(context);
+                            break;
+                        case "/move":
+                            RecieveMoves(context);
+                            break;
+                    }
+                    if (!handled) {
+                        response.StatusCode = 404;
+                    }
+                } catch (Exception e) {
+                    Debug.Log("Server failure: " + e);
+                    context.Response.StatusCode = 500;
+                    context.Response.Close();
+                }
+            }
         }
+    }
 
+    private Dictionary<string, string[]> ReadStream(HttpListenerContext context) {
+        string str_stream = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding).ReadToEnd();
+        Dictionary<string, string[]> data = new Dictionary<string, string[]>();
+        string[] data_pairs = str_stream.Split('&');
+        foreach(string pair in data_pairs) {
+            string[] tuple = pair.Split('=');
+            data.Add(tuple[0], tuple[1].Split('+'));
+        };
+        return data;
+    }
+
+    private void RegisterUser(HttpListenerContext context) {
+        Dictionary<string, string[]> data = ReadStream(context);
+        string uid = data["userID"][0];
+        // TODO @nico make a new player from this uid
+        Debug.Log("uid: [" + uid + "]");
         context.Response.Close();
     }
 
-    private void RecieveMoves(Dictionary<string, string[]> data) {
-        // @nico you can get a userid from data["userID"][0] like this:
-        Debug.Log("uid: [" + data["userID"][0] + "]");
+    private void RecieveMoves(HttpListenerContext context) {
+        Dictionary<string, string[]> data = ReadStream(context);
+
+        // TODO @nico you can get a userid from this:
+        string uid = data["userID"][0];
 
         TwitchMoves = new LinkedList<Direction>();
         foreach (string dir in data["moves"]) {
@@ -86,6 +105,7 @@ public class UnityHttpListener : MonoBehaviour
                 Debug.Log("oops");
             }
         }
+        context.Response.Close();
     }
 
 }
