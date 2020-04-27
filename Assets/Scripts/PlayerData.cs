@@ -9,9 +9,10 @@ public class PlayerData : MonoBehaviour
     public int damageMin = 1;
     public Point coord = new Point(0,0);
     public Team team;
+    // TODO assign on register uid
+    public string id = "";
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         team = (Team)Random.Range(0,1);
     }
 }

@@ -9,6 +9,7 @@ public class Board : MonoBehaviour {
     public Tilemap tilemap;
     public GameObject kingPrefab;
     public GameObject enemyPrefab;
+    public UnityHttpClient network;
     int xScale = 1;
     int yScale = 1;
     private const int movesPerTurn = 5;
@@ -49,29 +50,25 @@ public class Board : MonoBehaviour {
         tilemap.ClearAllTiles();
         tilemap.SetTiles(positions, tileArray); 
 
-        print("poplulate board now");
         populateBoard();
         Refresh();
     }
 
     public void populateBoard() {
-        print("ahhhhhhhhhhhhh!!");
         GameObject player = Instantiate(kingPrefab, transform.position, transform.rotation);
         GameObject twitch = Instantiate(enemyPrefab, transform.position, transform.rotation);
-        print("2222222222222");
 
         king = player.GetComponent<GamePiece>();
-        print("king GetComponent:" + king);
         king.board = this;
         king.SetPosition(new Point(0,0));
 
         enemy = twitch.GetComponent<GamePiece>();
-        print("enemy GetComponent:" + enemy);
         enemy.board = this;
         enemy.SetPosition(new Point(9,9));
 
         Register(king, king.data.coord);
         Register(enemy, enemy.data.coord);
+        network.sendMinimapArray(SerializeBoard());
     }
 
 
@@ -106,6 +103,46 @@ public class Board : MonoBehaviour {
         return newCoord;
     }
 
+    private string SerializePiece(GamePiece gp) {
+        string type = "0";
+        string id = "";
+        if (gp != null) {
+            // TODO when ally types are in
+            // if (typeof(gp) == typeof(ally)) type = "1";
+            if (gp.GetType() == enemy.GetType()) type = "2";
+            if (gp.GetType() == king.GetType()) type = "3";
+            id = gp.data.id;
+        }
+        return "{\"type\": " + type +  ", \"id\": \"" + id + "\"}";
+    }
+
+    public string SerializeBoard() {
+        string str = "[";
+        for (int x=0; x<xSize; x++) {
+            str += "[";
+            for (int y=0; y<ySize; y++) {
+                str += "[";
+                if (tiles[x,y].Count == 0) {
+                    str += SerializePiece(null);
+                }
+                for (int i=0; i<tiles[x,y].Count; i++) {
+                    str += SerializePiece(tiles[x,y][i]);
+                    if (i != tiles[x,y].Count -1) {
+                        str += ",";
+                    }
+                }
+                str += "]";
+                if (y != ySize -1) {
+                    str += ",";
+                }
+            }
+            str += "]";
+            if (x != xSize -1) {
+                str += ",";
+            }
+        }
+        return str + "]";
+    }
 
     public IEnumerator StartTurn() {
         for(int i = 0; i < movesPerTurn; i++) {
@@ -120,6 +157,7 @@ public class Board : MonoBehaviour {
         foreach (GamePiece gp in pieces) {
             gp.MoveStep();
         }
+        network.sendMinimapArray(SerializeBoard());
     }
 
     private void checkCombat() {

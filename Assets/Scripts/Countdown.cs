@@ -8,6 +8,7 @@ public class Countdown : MonoBehaviour
 {
     public Text countdownText;
     public Board gameBoard;
+    public UnityHttpClient httpClient;
     public float percentTimeLeftMaxRed;
 
     [SerializeField]
@@ -52,6 +53,7 @@ public class Countdown : MonoBehaviour
         }
         //trigger Turn end; reset counter
         StartCoroutine(gameBoard.StartTurn());
+        // StartCoroutine(httpClient.sendMinimapArray());
         StartCoroutine(StartCountdown(totalCountdownTime));
     }
 }
